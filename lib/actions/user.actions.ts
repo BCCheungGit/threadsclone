@@ -58,7 +58,7 @@ export async function fetchUser(userId: string) {
         //    path: 'communities',
         //    model: Community,
         //})
-    } catch (error) {
+    } catch (error: any) {
         throw new Error(`failed to fetch user: ${error.message}`)
     }
 }
