@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const CommunitySchema = new mongoose.Schema({
+const communitySchema = new mongoose.Schema({
     id: {type: String, required: true},
     username: {type: String, required: true, unique: true},
     name: { type: String, required: true},
@@ -27,7 +27,7 @@ const CommunitySchema = new mongoose.Schema({
 });
 
 
-const Community = mongoose.models.Community || mongoose.model('Community', CommunitySchema);
+const Community = mongoose.models.Community || mongoose.model('Community', communitySchema);
 
 
 
