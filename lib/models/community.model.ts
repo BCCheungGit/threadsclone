@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const communitySchema = new mongoose.Schema({
+const CommunitySchema = new mongoose.Schema({
     id: {type: String, required: true},
     username: {type: String, required: true, unique: true},
     name: { type: String, required: true},
