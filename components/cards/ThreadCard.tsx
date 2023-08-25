@@ -82,13 +82,22 @@ const ThreadCard = ({
 
                             </div>
 
-
+                        <div className='flex flex-row gap-3 mt-1'>
+                        {isComment && (
+                            <p className='text-subtle-medium text-gray-1'>
+                                Posted: {formatDateString(createdAt)}
+                            </p>
+                        )}
                         {isComment && comments.length > 0 && (
                             <Link href={`/thread/${id}`}>
-                                <p className='mt-1 text-subtle-medium text-gray-1'>{comments.length} replies</p>
+                                <p className='text-subtle-medium text-gray-1'>{comments.length} replies</p>
 
                             </Link>
+                            
                         )}
+                        
+                        </div>
+                        
 
                             
 
@@ -106,8 +115,6 @@ const ThreadCard = ({
                     isComment={isComment}
                 />
                 
-
-                {/* TODO: show comment logos */}
 
             </div>
             {!isComment && comments.length > 0 && (
@@ -131,7 +138,7 @@ const ThreadCard = ({
         </div>
       )}
 
-            {!isComment && community ? (
+            {community ? (
                     <Link href={`/communities/${community.id}`} className='mt-5 flex items-center'>
                         <p className='text-subtle-medium text-gray-1'>
                             Posted: {formatDateString(createdAt)}
@@ -147,11 +154,16 @@ const ThreadCard = ({
                         />
                     </Link>
                 ): (
-                    <div className='mt-5 flex items-center'>
+                     <div className='mt-5 flex items-center'>
+                    {!isComment && (
+                       
                         <p className='text-subtle-medium text-gray-1'>
                         Posted: {formatDateString(createdAt)}
                         </p>
+                        
+                    )}
                     </div>
+                    
                 )}
             
             

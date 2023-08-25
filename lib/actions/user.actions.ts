@@ -157,9 +157,6 @@ export async function getActivity(userId: string) {
   try {
     connectToDB();
 
-    //Calculate date and time 12 hours ago
-    const cutOff = new Date();
-    cutOff.setHours(cutOff.getHours() - 12)
 
     // Find all threads created by the user
     const userThreads = await Thread.find({ author: userId });
@@ -175,7 +172,7 @@ export async function getActivity(userId: string) {
     const replies = await Thread.find({
       _id: { $in: childThreadIds },
       author: { $ne: userId },
-      createdAt: { $gte: cutOff}
+
       // Exclude threads authored by the same user
     }).populate({
       path: "author",
