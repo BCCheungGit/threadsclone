@@ -19,9 +19,12 @@ async function Page() {
 
     return (
       <section>
-          <h1 className="head-text mb-10">Activity</h1>
-
+          <h1 className="head-text">Activity</h1>
+            <p className="!text-small-regular text-gray-1">
+              Activity will only appear within the last 12 hours
+            </p>
           <section className="mt-10 flex flex-col gap-5">
+            
             {activity.length > 0 ? (
               <>
                 {activity.map((activity) => (

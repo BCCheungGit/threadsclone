@@ -130,11 +130,11 @@ const ThreadCard = ({
           </Link>
         </div>
       )}
-      
-            {!isComment && community && (
+
+            {!isComment && community ? (
                     <Link href={`/communities/${community.id}`} className='mt-5 flex items-center'>
                         <p className='text-subtle-medium text-gray-1'>
-                            {formatDateString(createdAt)}
+                            Posted: {formatDateString(createdAt)}
                             {" "} - {community.name} Community
                         </p>
 
@@ -146,6 +146,12 @@ const ThreadCard = ({
                             className='ml-1 rounded-full object-cover'
                         />
                     </Link>
+                ): (
+                    <div className='mt-5 flex items-center'>
+                        <p className='text-subtle-medium text-gray-1'>
+                        Posted: {formatDateString(createdAt)}
+                        </p>
+                    </div>
                 )}
             
             
