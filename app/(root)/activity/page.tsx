@@ -21,7 +21,7 @@ async function Page() {
       <section>
           <h1 className="head-text">Activity</h1>
             <p className="!text-small-regular text-gray-1">
-              Activity will only appear within the last 12 hours
+              Only activity within the last 12 hours will be shown
             </p>
           <section className="mt-10 flex flex-col gap-5">
             
