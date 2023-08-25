@@ -27,7 +27,7 @@ async function Page() {
   return (
     <section>
         <h1 className="head-text mb-10">Search</h1>
-
+    
 
 
         <div className="mt-14 flex flex-col gap-9">
@@ -43,8 +43,6 @@ async function Page() {
                             username={person.username}
                             imgUrl={person.image}
                             personType="User"
-                        
-                        
                         />
                     ))}
                 </>
