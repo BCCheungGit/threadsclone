@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image'
+import { useState } from 'react';
 import { formatDateString } from '@/lib/utils';
 import DeleteThread from '../forms/DeleteThread';
 
@@ -41,6 +42,11 @@ const ThreadCard = ({
     comments,
     isComment,
 }: Props) => {
+    const [liked, setLiked] = useState(false)
+    const handleLike = () => {
+        setLiked(true)
+    }
+
     return (
         <article className={`flex w-full flex-col rounded-xl ${isComment ? 'px-0 xs:px-7' : 'bg-dark-2 p-7'}`}>
             <div className="flex items-start justify-between">
@@ -73,7 +79,7 @@ const ThreadCard = ({
 
                         <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
                             <div className='flex gap-3.5'>
-                                <Image src="/assets/heart-gray.svg" alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
+                                <Image src={liked ? `/assets/heart-gray.svg` : '/assets/heart-filled.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' onClick={() => {handleLike()}} />
                                 <Link href={`/thread/${id}`}>
                                     <Image src="/assets/reply.svg" alt="reply" width={24} height={24} className='cursor-pointer object-contain' />
                                 </Link>

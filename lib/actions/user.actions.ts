@@ -172,7 +172,6 @@ export async function getActivity(userId: string) {
     const replies = await Thread.find({
       _id: { $in: childThreadIds },
       author: { $ne: userId },
-
       // Exclude threads authored by the same user
     }).populate({
       path: "author",

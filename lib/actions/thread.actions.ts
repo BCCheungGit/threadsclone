@@ -238,3 +238,24 @@ export async function addCommentToThread(
     throw new Error("Unable to add comment");
   }
 }
+
+
+export async function addLike(
+  threadId: string,
+  userId: string,
+  path: string,
+
+) {
+
+  //connect to MongoDB database
+  connectToDB() 
+
+  const likedThread = await Thread.findById(threadId);
+
+  
+
+
+
+
+
+}
