@@ -43,6 +43,7 @@ const ThreadCard = ({
     isComment,
 }: Props) => {
     const [liked, setLiked] = useState(false)
+
     const handleLike = () => {
         setLiked(true)
     }
@@ -79,7 +80,9 @@ const ThreadCard = ({
 
                         <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
                             <div className='flex gap-3.5'>
-                                <Image src={liked ? `/assets/heart-gray.svg` : '/assets/heart-filled.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' onClick={() => {handleLike()}} />
+                                <a onClick={() => {handleLike()}}>
+                                    <Image src={liked ? '/assets/heart-gray.svg' : '/assets/heart-filled.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
+                                </a>
                                 <Link href={`/thread/${id}`}>
                                     <Image src="/assets/reply.svg" alt="reply" width={24} height={24} className='cursor-pointer object-contain' />
                                 </Link>
