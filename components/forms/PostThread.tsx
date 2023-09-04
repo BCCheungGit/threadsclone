@@ -68,6 +68,7 @@ function PostThread({ userId} : {userId: string} ) {
           author: userId,
           communityId: organization ? organization.id : null,
           path: pathname,
+          likes: 0
         });
 
         router.push('/');
