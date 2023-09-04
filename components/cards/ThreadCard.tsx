@@ -35,6 +35,7 @@ interface Props {
         }
     }[]
     isComment?: boolean;
+    likes: number;
 }
 
 
@@ -48,14 +49,20 @@ const ThreadCard = ({
     createdAt,
     comments,
     isComment,
+    likes,
 }: Props) => {
-    const [liked, setLiked] = useState(false)
+    const [liked, setLiked] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
     const handleLike = () => {
         setLiked(!liked)
-        addLike(id, currentUserId)
+        if (!liked) {
+            addLike(id, currentUserId)
+        } else {
+
+        }
+       
     }
 
     return (
@@ -92,7 +99,16 @@ const ThreadCard = ({
                             <div className='flex gap-3.5'>
                                 <a onClick={() => {handleLike()}}>
                                     <Image src={liked ? '/assets/heart-filled.svg' : '/assets/heart-gray.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
+                                    <p className='text-gray-1 text-subtle-medium'>{likes}</p>
                                 </a>
+
+
+
+                                {/* TODO: ADD A LIKE CARD HERE  */}
+
+
+
+
                                 <Link href={`/thread/${id}`}>
                                     <Image src="/assets/reply.svg" alt="reply" width={24} height={24} className='cursor-pointer object-contain' />
                                 </Link>

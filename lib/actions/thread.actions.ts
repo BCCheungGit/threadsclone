@@ -175,6 +175,7 @@ export async function fetchThreadById(threadId: string) {
         model: Community,
         select: "_id id name image",
       }) // Populate the community field with _id and name
+      
       .populate({
         path: "children", // Populate the children field
         populate: [
@@ -248,30 +249,56 @@ export async function addLike(
   userId: string,
 
 ) {
-
   //connect to MongoDB database
   connectToDB() 
   try {
     const likedThread = await Thread.findById(threadId);
-
     if (!likedThread) {
       throw new Error("Thread not found. Please try again.")
 
     }
-    
     await Thread.updateOne(
       {_id: threadId},
       { $inc: { likes: 1 }},
     )
     console.log(likedThread.likes)
-  
   } catch (err) {
     throw new Error("Could not like the post, please try again later")
   }
-  
+}
+
+export async function removeLike(
+  threadId: string,
+  userId: string,
+) {
+  connectToDB();
+  try {
+    const likedThread = await Thread.findById(threadId);
+    if (!likedThread) {
+      throw new Error("Thread not found. Please try again.")
+    }
+    await Thread.updateOne(
+      {_id: threadId},
+      { $inc: {likes: -1}},
+    );
+    console.log(likedThread.likes);
+  } catch (error) {
+    throw new Error("Could not unlike the post, please try again later.");
+  }
+}
 
 
+export async function fetchLikes(
+  threadId: string,
+) {
+  connectToDB();
+  try {
+    const targetThread = await Thread.findById(threadId);
+    if (!targetThread) {
+      throw new Error("Thread not found. Please try again.")
+    }
 
-
-
+  } catch (error) {
+    
+  }
 }
