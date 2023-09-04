@@ -97,10 +97,17 @@ const ThreadCard = ({
 
                         <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
                             <div className='flex gap-3.5'>
-                                <a onClick={() => {handleLike()}}>
-                                    <Image src={liked ? '/assets/heart-filled.svg' : '/assets/heart-gray.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
-                                    <p className='text-gray-1 text-subtle-medium'>{likes}</p>
-                                </a>
+                                
+                                    {
+                                        liked ? 
+                                        <a onClick={() => {handleLike()}}>
+                                        <Image src={'/assets/heart-gray.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
+                                        </a>
+                                        :
+                                        <p className='text-gray-1 text-subtle-medium'>{likes}</p>
+                                    }
+                                    
+                                    
 
 
 
