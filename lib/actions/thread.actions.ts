@@ -243,15 +243,28 @@ export async function addCommentToThread(
 export async function addLike(
   threadId: string,
   userId: string,
-  path: string,
 
 ) {
 
   //connect to MongoDB database
   connectToDB() 
+  try {
+    const likedThread = await Thread.findById(threadId);
 
-  const likedThread = await Thread.findById(threadId);
+    if (!likedThread) {
+      throw new Error("Thread not found. Please try again.")
 
+    }
+    
+    await Thread.updateOne(
+      {_id: threadId},
+      { $inc: { likes: 1 }},
+    )
+    console.log(likedThread.likes)
+  
+  } catch (err) {
+    throw new Error("Could not like the post, please try again later")
+  }
   
 
 

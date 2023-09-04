@@ -5,6 +5,13 @@ import { useState } from 'react';
 import { formatDateString } from '@/lib/utils';
 import DeleteThread from '../forms/DeleteThread';
 
+import { addLike } from '@/lib/actions/thread.actions';
+
+
+import { usePathname, useRouter } from 'next/navigation'
+
+
+
 
 interface Props {
     id: string;
@@ -43,10 +50,12 @@ const ThreadCard = ({
     isComment,
 }: Props) => {
     const [liked, setLiked] = useState(false)
+    const router = useRouter();
+    const pathname = usePathname();
 
     const handleLike = () => {
         setLiked(!liked)
-        
+        addLike(id, currentUserId)
     }
 
     return (
