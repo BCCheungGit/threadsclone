@@ -104,7 +104,7 @@ const ThreadCard = ({
                                         <Image src={'/assets/heart-gray.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
                                         </a>
                                         :
-                                        <p className='text-gray-1 text-subtle-medium mt-3'>{likes}</p>
+                                        <p className='text-gray-1 text-subtle-medium mt-3'>{likes} likes</p>
                                     }
                                     
                                     
