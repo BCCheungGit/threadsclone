@@ -28,7 +28,13 @@ const threadSchema = new mongoose.Schema({
     ],
     likes: {
         type: Number,
-    }
+    },
+    likedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ]
 });
 
 

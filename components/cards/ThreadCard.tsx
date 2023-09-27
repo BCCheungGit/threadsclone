@@ -1,15 +1,10 @@
-"use client"
 import Link from 'next/link';
 import Image from 'next/image'
-import { useState } from 'react';
 import { formatDateString } from '@/lib/utils';
 import DeleteThread from '../forms/DeleteThread';
 
-import { addLike } from '@/lib/actions/thread.actions';
-
-
-import { usePathname, useRouter } from 'next/navigation'
-
+import { addLike, removeLike, checkLiked } from '@/lib/actions/thread.actions';
+import LikeHeart from '../shared/LikeHeart';
 
 
 
@@ -36,6 +31,7 @@ interface Props {
     }[]
     isComment?: boolean;
     likes: number;
+    likedBy: string[];
 }
 
 
@@ -50,21 +46,9 @@ const ThreadCard = ({
     comments,
     isComment,
     likes,
+    likedBy,
 }: Props) => {
-    const [liked, setLiked] = useState(false);
-    const router = useRouter();
-    const pathname = usePathname();
-
-    const handleLike = () => {
-        setLiked(!liked)
-        if (!liked) {
-            addLike(id, currentUserId)
-        } else {
-
-        }
-       
-    }
-
+   
     return (
         <article className={`flex w-full flex-col rounded-xl ${isComment ? 'px-0 xs:px-7' : 'bg-dark-2 p-7'}`}>
             <div className="flex items-start justify-between">
@@ -96,26 +80,9 @@ const ThreadCard = ({
                         </p>
 
                         <div className={`${isComment && 'mb-10'} mt-5 flex flex-col gap-3`}>
-                            <div className='flex gap-3.5'>
-                                
-                                    {
-                                        liked ? 
-                                        <a onClick={() => {handleLike()}}>
-                                        <Image src={'/assets/heart-gray.svg'} alt="heart" width={24} height={24} className='cursor-pointer object-contain' />
-                                        </a>
-                                        :
-                                        <p className='text-gray-1 text-subtle-medium mt-3'>{likes} likes</p>
-                                    }
-                                    
-                                    
+                            <div className='flex gap-1'>
 
-
-
-                                {/* TODO: ADD A LIKE CARD HERE  */}
-
-
-
-
+                                <LikeHeart userId={currentUserId} threadId={id} likes={likes} />
                                 <Link href={`/thread/${id}`}>
                                     <Image src="/assets/reply.svg" alt="reply" width={24} height={24} className='cursor-pointer object-contain' />
                                 </Link>

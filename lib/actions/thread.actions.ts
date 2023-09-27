@@ -54,9 +54,10 @@ interface Params {
   communityId: string | null,
   path: string,
   likes: number,
+  likedBy: string[],
 }
 
-export async function createThread({ text, author, communityId, likes, path }: Params
+export async function createThread({ text, author, communityId, likes, path, likedBy }: Params
 ) {
   try {
     connectToDB();
@@ -70,7 +71,8 @@ export async function createThread({ text, author, communityId, likes, path }: P
       text,
       author,
       community: communityIdObject,
-      likes: likes
+      likes: likes,
+      likedBy: likedBy,
        // Assign communityId if provided, or leave it null for personal account
     });
 
@@ -253,17 +255,27 @@ export async function addLike(
   connectToDB() 
   try {
     const likedThread = await Thread.findById(threadId);
-    if (!likedThread) {
+    const currentUser = await User.findOne(({id: userId}));
+    const userLiked = currentUser.likedPosts.includes(threadId);
+    if (userLiked) {
+      throw new Error("You have already liked this post")
+    } else if (!likedThread) {
       throw new Error("Thread not found. Please try again.")
 
+    } else {
+      await Thread.updateOne(
+        {_id: threadId},
+        { $inc: { likes: 1 }},
+        {$push: {likedBy: currentUser._id}}
+      )
+      await User.updateOne(
+        {id: userId},
+        {$push: {likedPosts: threadId}}
+      )
     }
-    await Thread.updateOne(
-      {_id: threadId},
-      { $inc: { likes: 1 }},
-    )
     console.log(likedThread.likes)
-  } catch (err) {
-    throw new Error("Could not like the post, please try again later")
+  } catch (err: any) {
+    throw new Error("Could not like the post, please try again later: " + err.message )
   }
 }
 
@@ -274,13 +286,26 @@ export async function removeLike(
   connectToDB();
   try {
     const likedThread = await Thread.findById(threadId);
-    if (!likedThread) {
-      throw new Error("Thread not found. Please try again.")
+    const currentUser = await User.findOne(({id: userId}));
+    const userLiked = currentUser.likedPosts.includes(threadId);
+    if (!userLiked) {
+        throw new Error("You have not liked this post");
+    } else if (!likedThread) {
+        throw new Error("Thread not found. Please try again.");
+    } else if (likedThread.likes == 0) {
+        throw new Error("This post has no likes")
     }
-    await Thread.updateOne(
-      {_id: threadId},
-      { $inc: {likes: -1}},
-    );
+    else {
+        await Thread.updateOne(
+        {_id: threadId},
+        { $inc: {likes: -1}},
+        {$pull: {likedBy: currentUser._id}},
+        );
+        await User.updateOne(
+          {id: userId},
+          { $pull: {likedPosts: threadId}}
+        )
+    }
     console.log(likedThread.likes);
   } catch (error) {
     throw new Error("Could not unlike the post, please try again later.");
@@ -288,17 +313,22 @@ export async function removeLike(
 }
 
 
-export async function fetchLikes(
+export async function checkLiked(
   threadId: string,
+  userId: string,
 ) {
   connectToDB();
   try {
-    const targetThread = await Thread.findById(threadId);
-    if (!targetThread) {
-      throw new Error("Thread not found. Please try again.")
-    }
+    const currentThread = await Thread.findById(threadId);
+    const currentUser = await User.findOne(({id: userId}));
+    const userLiked = currentUser.likedPosts.includes(threadId);
 
-  } catch (error) {
-    
+    if (!currentThread) {
+      throw new Error("Thread not found. Please try again.");
+    }
+    return userLiked;
+
+  } catch (error: any) {
+    throw new Error("Error determining if post was liked: " + error.message)
   }
 }

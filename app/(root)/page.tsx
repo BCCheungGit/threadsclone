@@ -5,11 +5,11 @@ import { fetchThreads } from "@/lib/actions/thread.actions";
 
 import { currentUser } from "@clerk/nextjs";
 
-
 export default async function Home() {
   const result = await fetchThreads(1, 30);
   const user = await currentUser();
-  console.log(result.posts.length)
+
+
 
   return (
     <>
@@ -31,6 +31,7 @@ export default async function Home() {
               createdAt={post.createdAt}
               comments={post.children}
               likes={post.likes}
+              likedBy={post.likedBy}
 
             />
           ))}
