@@ -54,10 +54,9 @@ interface Params {
   communityId: string | null,
   path: string,
   likes: number,
-  likedBy: string[],
 }
 
-export async function createThread({ text, author, communityId, likes, path, likedBy }: Params
+export async function createThread({ text, author, communityId, likes, path }: Params
 ) {
   try {
     connectToDB();
@@ -72,7 +71,6 @@ export async function createThread({ text, author, communityId, likes, path, lik
       author,
       community: communityIdObject,
       likes: likes,
-      likedBy: likedBy,
        // Assign communityId if provided, or leave it null for personal account
     });
 
@@ -265,7 +263,7 @@ export async function addLike(
     } else {
       await Thread.updateOne(
         {_id: threadId},
-        { $inc: { likes: 1 }},
+        {$inc: { likes: 1 }},
         {$push: {likedBy: currentUser._id}}
       )
       await User.updateOne(
@@ -273,7 +271,7 @@ export async function addLike(
         {$push: {likedPosts: threadId}}
       )
     }
-    console.log(likedThread.likes)
+    console.log(likedThread.likedBy)
   } catch (err: any) {
     throw new Error("Could not like the post, please try again later: " + err.message )
   }
@@ -306,7 +304,7 @@ export async function removeLike(
           { $pull: {likedPosts: threadId}}
         )
     }
-    console.log(likedThread.likes);
+    console.log(likedThread.likedBy);
   } catch (error) {
     throw new Error("Could not unlike the post, please try again later.");
   }

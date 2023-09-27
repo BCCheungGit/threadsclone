@@ -16,13 +16,13 @@ const LikeHeart = ({ userId, threadId, likes }: Props) => {
     const handleLike = async () => {
         if (await checkLiked(threadId, userId)) {
             removeLike(threadId, userId);
-            
-            seturl('/assets/heart-filled.svg')
-            setDisplayLikes(likes + 1)
+            seturl('/assets/heart-gray.svg')
+            setDisplayLikes(displayLikes - 1)
+
         } else {
             addLike(threadId, userId)
-            seturl('/assets/heart-gray.svg')
-            setDisplayLikes(likes - 1)
+            seturl('/assets/heart-filled.svg')
+            setDisplayLikes(displayLikes + 1)
         }
     }
     return (  
