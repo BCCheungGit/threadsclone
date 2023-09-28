@@ -224,7 +224,8 @@ export async function addCommentToThread(
     const commentThread = new Thread({
       text: commentText,
       author: userId,
-      parentId: threadId, // Set the parentId to the original thread's ID
+      parentId: threadId,
+      likes: 0, // Set the parentId to the original thread's ID
     });
 
     // Save the comment thread to the database
@@ -263,14 +264,15 @@ export async function addLike(
     } else {
       await Thread.updateOne(
         {_id: threadId},
-        {$inc: { likes: 1 }},
-        {$push: {likedBy: currentUser._id}}
+        {$inc: { likes: 1 }}
       )
+      likedThread.likedBy.push(currentUser._id);
       await User.updateOne(
         {id: userId},
         {$push: {likedPosts: threadId}}
       )
     }
+    await likedThread.save();
     console.log(likedThread.likedBy)
   } catch (err: any) {
     throw new Error("Could not like the post, please try again later: " + err.message )
@@ -296,14 +298,15 @@ export async function removeLike(
     else {
         await Thread.updateOne(
         {_id: threadId},
-        { $inc: {likes: -1}},
-        {$pull: {likedBy: currentUser._id}},
-        );
+        { $inc: {likes: -1}}
+        )
+        likedThread.likedBy.pull(currentUser._id);
         await User.updateOne(
           {id: userId},
           { $pull: {likedPosts: threadId}}
         )
     }
+    await likedThread.save();
     console.log(likedThread.likedBy);
   } catch (error) {
     throw new Error("Could not unlike the post, please try again later.");

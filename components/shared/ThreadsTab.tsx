@@ -48,7 +48,6 @@ const ThreadsTab = async ({
                     createdAt={thread.createdAt}
                     comments={thread.children}
                     likes={thread.likes}
-                    likedBy={thread.likedBy}
                 />
             ))}
         </section>

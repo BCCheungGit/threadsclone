@@ -31,7 +31,6 @@ interface Props {
     }[]
     isComment?: boolean;
     likes: number;
-    likedBy: string[];
 }
 
 
@@ -46,7 +45,7 @@ const ThreadCard = ({
     comments,
     isComment,
     likes,
-    likedBy,
+
 }: Props) => {
    
     return (

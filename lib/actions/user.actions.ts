@@ -166,7 +166,14 @@ export async function getActivity(userId: string) {
       return acc.concat(userThread.children);
     }, []);
 
-
+    const likes = await Thread.find({
+        author: userId,
+        $and: [{likedBy: {$ne: userId}}, {likedBy: {$ne: []}}]
+    }).populate({
+      path: "likedBy",
+      model: User,
+      select: "name image _id",
+    })
 
     // Find and return the child threads (replies) excluding the ones created by the same user
     const replies = await Thread.find({
@@ -179,7 +186,7 @@ export async function getActivity(userId: string) {
       select: "name image _id",
     });
 
-    return replies;
+    return [replies, likes];
   } catch (error) {
     console.error("Error fetching replies: ", error);
     throw error;
